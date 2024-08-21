@@ -1,0 +1,3 @@
+metodo: post = /tienda-angarita/register   =>   body { userName, userPassword }
+
+metodo: post = /tienda-angarita/login      =>   body { userName, userPassword }
