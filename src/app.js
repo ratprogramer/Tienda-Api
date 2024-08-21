@@ -51,9 +51,37 @@ app.post('/tienda-angarita/login', async (req,res) => {
         const compare = await bcrypt.compare(userPassword, savedPassword)
         if(compare){
             const token = jwt.sign({user: user}, process.env.SECRET_KEY, {expiresIn: "1h"})
-            return res.status(200).json({token: token})
+            return res.status(200).json({message: "SUCCESSFUL LOGIN", token: token})
         }
         res.status(200).json({message: "WRONG PASSWORD"})
+    } catch (err){
+        res.status(500).json({message: "INTERNAL SERVER ERROR", error: err.message})
+    }
+})
+
+app.get('/tienda-angarita/home', async (req, res) => {
+    try{
+        const [result] = await db.query('SELECT * FROM products')
+        if(result.length == 0) {
+            return res.status(404).json({message: "PRODUCTS NOT FOUND"})
+        }
+        res.status(200).json({message: "SUCCESS BRINGING ALL THE PRODUCTS", products: result})
+    } catch (err){
+        res.status(500).json({message: "INTERNAL SERVER ERROR", error: err.message})
+    }
+})
+
+app.post('/tienda-angarita/home', async (req, res) => {
+    const {productImg, productName, productDescription, productPrice} = req.body
+    try{
+        if(!productImg || !productName || !productDescription || !productPrice){
+            return res.status(403).json({message:"MISSING DATA"})
+        }
+        const [rows] = await db.query('INSERT INTO products (product_name, product_description, product_price, product_photo) VALUES (?,?,?,?)', [productImg, productName, productDescription, productPrice])
+        if(rows.affectedRows  == 0){
+            return res.status(404).json({message: "FAILED INSERT"})
+        }
+        res.status(201).json({message: "SUCCESSFULLY CREATED PRODUCT"})
     } catch (err){
         res.status(500).json({message: "INTERNAL SERVER ERROR", error: err.message})
     }

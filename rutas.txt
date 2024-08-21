@@ -1,3 +1,12 @@
-metodo: post = /tienda-angarita/register   =>   body { userName, userPassword }
+Metodo: post = /tienda-angarita/register   =>   body { userName, userPassword }
 
-metodo: post = /tienda-angarita/login      =>   body { userName, userPassword }
+
+Metodo: post = /tienda-angarita/login      =>   body { userName, userPassword }
+
+
+Metodo: post = /tienda-angarita/home       =>   body { productImg, productName, productDescription, productPrice }
+Ruta para crear un producto, la imagen debe ser enviada como blob, investigar multer
+
+
+Metodo: get = /tienda-angarita/home        => devuelve un array con todos los objetos
+Ruta para traer todos los productos
