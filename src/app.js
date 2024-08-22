@@ -38,6 +38,7 @@ app.post('/tienda-angarita/register', async (req,res) => {
 
 app.post('/tienda-angarita/login', async (req,res) => {
     const { userData } = req.body
+    console.log( userData );
     try{
         if(!userData){
             return res.status(403).json({message:"MISSING DATA"})
