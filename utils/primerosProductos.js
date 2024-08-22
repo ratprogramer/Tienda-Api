@@ -12,16 +12,16 @@ function getBlobImage(filePath) {
 }
 
 const images = [
-    getBlobImage('images/jacket.jpg'),
-    getBlobImage('images/headphones.jpg'),
-    getBlobImage('images/smartwatch.jpg'),
-    getBlobImage('images/table.jpg'),
-    getBlobImage('images/bike.jpg'),
-    getBlobImage('images/keyboard.jpg'),
-    getBlobImage('images/charger.jpg'),
-    getBlobImage('images/watch.jpg'),
-    getBlobImage('images/speaker.jpg'),
-    getBlobImage('images/bulb.jpg')
+    getBlobImage('assets/images/jacket.jpg'),
+    getBlobImage('assets/images/headphones.jpg'),
+    getBlobImage('assets/images/smartwatch.jpg'),
+    getBlobImage('assets/images/table.jpg'),
+    getBlobImage('assets/images/bike.jpg'),
+    getBlobImage('assets/images/keyboard.jpg'),
+    getBlobImage('assets/images/charger.jpg'),
+    getBlobImage('assets/images/watch.jpg'),
+    getBlobImage('assets/images/speaker.jpg'),
+    getBlobImage('assets/images/bulb.jpg')
 ];
 
 const insertProducts = async () => {
