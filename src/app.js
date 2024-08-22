@@ -65,6 +65,9 @@ app.get('/tienda-angarita/home', async (req, res) => {
         if(result.length == 0) {
             return res.status(404).json({message: "PRODUCTS NOT FOUND"})
         }
+        result.forEach(product => {
+            product.product_photo = Buffer.from(product.product_photo).toString('base64');
+        });
         res.status(200).json({message: "SUCCESS BRINGING ALL THE PRODUCTS", products: result})
     } catch (err){
         res.status(500).json({message: "INTERNAL SERVER ERROR", error: err.message})
@@ -82,6 +85,21 @@ app.post('/tienda-angarita/home', async (req, res) => {
             return res.status(404).json({message: "FAILED INSERT"})
         }
         res.status(201).json({message: "SUCCESSFULLY CREATED PRODUCT"})
+    } catch (err){
+        res.status(500).json({message: "INTERNAL SERVER ERROR", error: err.message})
+    }
+})
+
+app.get('/tienda-angarita/home/:articulo', async (req, res) => {
+    const productName = decodeURIComponent(req.params.articulo)
+    try{
+        const [result] = await db.query('SELECT * FROM products WHERE product_name = ?', [productName])
+        if(result.length == 0) {
+            return res.status(404).json({message: "PRODUCT NOT FOUND"})
+        }
+        const product = result[0];
+        product.product_photo = product.product_photo.toString('base64')
+        res.status(200).json({message: `SUCCESS BRINGING THE PRODUCT ${productName}`, product: product});
     } catch (err){
         res.status(500).json({message: "INTERNAL SERVER ERROR", error: err.message})
     }
