@@ -12,7 +12,7 @@ app.use(express.json())
 app.use(cors())
 dotenv.config()
 
-const db = await mysql.createConnection({ //Importante el await para manejar las consultas con promesas
+export const db = await mysql.createConnection({ //Importante el await para manejar las consultas con promesas
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,

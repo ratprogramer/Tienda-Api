@@ -1,3 +1,7 @@
+PRIMERO CORRER EL COMANDO: node src/primerosProductos.js
+luego control + c para cancelar el servidor, y luego volver a ejecutar el server con: node --watch src/app.js
+
+
 Metodo: post = /tienda-angarita/register   =>   body { userName, userPassword }
 
 
