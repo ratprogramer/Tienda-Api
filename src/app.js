@@ -37,18 +37,18 @@ app.post('/tienda-angarita/register', async (req,res) => {
 })
 
 app.post('/tienda-angarita/login', async (req,res) => {
-    const { userName, userPassword } = req.body
+    const { userData } = req.body
     try{
-        if(!userName || !userPassword){
+        if(!userData.userName || !userData.userPassword){
             return res.status(403).json({message:"MISSING DATA"})
         }
-        const [result] = await db.query('SELECT * FROM users WHERE user_name = ?', [userName])
+        const [result] = await db.query('SELECT * FROM users WHERE user_name = ?', [userData.userName])
         if(result.length  == 0){
             return res.status(404).json({message: "WRONG USER"})
         }
         const user = result[0]
         const savedPassword = user.user_password
-        const compare = await bcrypt.compare(userPassword, savedPassword)
+        const compare = await bcrypt.compare(userData.userPassword, savedPassword)
         if(compare){
             const token = jwt.sign({user: user}, process.env.SECRET_KEY, {expiresIn: "1h"})
             return res.status(200).json({message: "SUCCESSFUL LOGIN", token: token})

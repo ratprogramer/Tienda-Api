@@ -15,3 +15,5 @@ CREATE TABLE products (
     product_price INT,
     product_photo LONGBLOB
 );
+drop table products;
+select * from products
