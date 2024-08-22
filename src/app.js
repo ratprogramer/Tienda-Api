@@ -20,13 +20,13 @@ export const db = await mysql.createConnection({ //Importante el await para mane
 })
 
 app.post('/tienda-angarita/register', async (req,res) => {
-    const { userName, userPassword } = req.body
+    const { userData } = req.body
     try{
-        if(!userName || !userPassword){
+        if(!userData.userName || !userData.userPassword){
             return res.status(403).json({message:"MISSING DATA"})
         }
-        const hashPassword = await bcrypt.hash(userPassword, 10)
-        const [rows] = await db.query('INSERT INTO users (user_name, user_password) VALUES (?,?)', [userName, hashPassword])
+        const hashPassword = await bcrypt.hash(userData.userPassword, 10)
+        const [rows] = await db.query('INSERT INTO users (user_name, user_password) VALUES (?,?)', [userData.userName, hashPassword])
         if(rows.affectedRows  == 0){
             return res.status(404).json({message: "FAILED INSERT"})
         }
@@ -51,7 +51,7 @@ app.post('/tienda-angarita/login', async (req,res) => {
         const compare = await bcrypt.compare(userData.userPassword, savedPassword)
         if(compare){
             const token = jwt.sign({user: user}, process.env.SECRET_KEY, {expiresIn: "1h"})
-            return res.status(200).json({message: "SUCCESSFUL LOGIN", token: token})
+            return res.status(200).json({message: "SUCCESSFUL LOGIN", token: token, user: user})
         }
         res.status(200).json({message: "WRONG PASSWORD"})
     } catch (err){
