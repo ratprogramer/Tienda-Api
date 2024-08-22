@@ -18,6 +18,10 @@ export const db = await mysql.createConnection({ //Importante el await para mane
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE
 })
+app.post('/tienda-angarita/users', async (req,res) => {
+    const [result] = await db.query('SELECT * FROM users')
+    res.status(201).json({message: "SUCCESSFULLY CREATED USER", result: result})
+})
 
 app.post('/tienda-angarita/register', async (req,res) => {
     const { userData } = req.body
