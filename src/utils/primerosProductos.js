@@ -1,7 +1,7 @@
 // SOLO EJECUTAR UNA VEZ
 
 import { fileURLToPath } from 'url';
-import {db} from './app.js';
+import {db} from '../app.js';
 import { dirname, resolve } from 'path';
 import fs from 'fs';
 const __filename = fileURLToPath(import.meta.url);

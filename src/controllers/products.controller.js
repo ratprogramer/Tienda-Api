@@ -1,30 +1,31 @@
-import { db } from "../config/db.config.js";
+import { getProductByName, getAllProducts, createProduct } from "../services/products.services.js";
+import { getComments } from "./coments.controller.js";
 
-export async function getAllProducts(req, res){
+export async function getAllProductsController(req, res){
     try{
-        const [result] = await db.query('SELECT * FROM products')
-        if(result.length == 0) {
+        const products = await getAllProducts()
+        if(!products){
             return res.status(404).json({message: "PRODUCTS NOT FOUND"})
         }
-        result.forEach(product => {
+        products.forEach(product => {
             product.product_photo = Buffer.from(product.product_photo).toString('base64');
         });
-        res.status(200).json({message: "SUCCESS BRINGING ALL THE PRODUCTS", products: result})
+        res.status(200).json({message: "SUCCESS BRINGING ALL THE PRODUCTS", products: products})
     } catch (err){
         res.status(500).json({message: "INTERNAL SERVER ERROR", error: err.message})
     }
 }
 
 
-export async function createProduct(req, res) {
-    const {productImg, productName, productDescription, productPrice} = req.body
+export async function createProductController(req, res) {
+    const productData = req.body
     try{
-        if(!productImg || !productName || !productDescription || !productPrice){
+        if(!productData.productName || !productData.productDescription || !productData.productPrice){
             return res.status(403).json({message:"MISSING DATA"})
         }
-        const [rows] = await db.query('INSERT INTO products (product_name, product_description, product_price, product_photo) VALUES (?,?,?,?)', [productImg, productName, productDescription, productPrice])
-        if(rows.affectedRows  == 0){
-            return res.status(404).json({message: "FAILED INSERT"})
+        const result = await createProduct(productData)
+        if(!result){
+            return res.status(404).json({message: "PRODUCT NOT FOUND"})
         }
         res.status(201).json({message: "SUCCESSFULLY CREATED PRODUCT"})
     } catch (err){
@@ -32,16 +33,16 @@ export async function createProduct(req, res) {
     }
 }
 
-export async function getOneProduct(req, res) {
+export async function getOneProductController(req, res) {
     const productName = decodeURIComponent(req.params.articulo)
     try{
-        const [result] = await db.query('SELECT * FROM products WHERE product_name = ?', [productName])
-        if(result.length == 0) {
+        const product = await getProductByName(productName)
+        if(!product){
             return res.status(404).json({message: "PRODUCT NOT FOUND"})
         }
-        const product = result[0];
         product.product_photo = product.product_photo.toString('base64')
-        res.status(200).json({message: `SUCCESS BRINGING THE PRODUCT ${productName}`, product: product});
+        const [comments] = await getComments(productName)
+        res.status(200).json({message: `SUCCESS BRINGING THE PRODUCT ${productName}`, product: product, comments: comments});
     } catch (err){
         res.status(500).json({message: "INTERNAL SERVER ERROR", error: err.message})
     }

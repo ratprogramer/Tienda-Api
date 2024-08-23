@@ -1,11 +1,13 @@
 import { Router } from 'express'
-import { getAllProducts, getOneProduct, createProduct } from '../controllers/products.controller.js'
+import { getAllProductsController, createProductController, getOneProductController } from '../controllers/products.controller.js'
+import { createComment } from '../controllers/coments.controller.js'
 
 const router = Router()
 
-router.post('/home', createProduct)
-router.get('/home', getAllProducts)
-router.get('/home/:articulo', getOneProduct)
+router.post('/home', createProductController)
+router.get('/home', getAllProductsController)
+router.get('/home/:articulo', getOneProductController)
+router.post('/home/:articulo', createComment)
 
 export const productsRouter = router
 

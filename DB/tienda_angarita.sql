@@ -15,5 +15,17 @@ CREATE TABLE products (
     product_price INT,
     product_photo LONGBLOB
 );
-drop table products;
+
+CREATE TABLE comments (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    comment_text VARCHAR(300),
+    user_id INT,
+    product_id INT,
+    type BOOLEAN,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+
 select * from products
+
