@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs"
-import { db } from "../config/db.config.js";
+import { createUser, getUserByName } from "../services/users.services.js";
+
 
 export async function userRegister (req,res) {
     const  userData  = req.body
@@ -9,9 +10,9 @@ export async function userRegister (req,res) {
             return res.status(403).json({message:"MISSING DATA"})
         }
         const hashPassword = await bcrypt.hash(userData.userPassword, 10)
-        const [rows] = await db.query('INSERT INTO users (user_name, user_password) VALUES (?,?)', [userData.userName, hashPassword])
-        if(rows.affectedRows  == 0){
-            return res.status(404).json({message: "FAILED INSERT"})
+        const message = await createUser(userData, hashPassword)
+        if(!message){
+            return res.status(400).json({message: "BAD REQUEST"})
         }
         res.status(201).json({message: "SUCCESSFULLY CREATED USER"})
     } catch (err){
@@ -19,8 +20,8 @@ export async function userRegister (req,res) {
     }
 }
 
-export async function userLogin (req,res) {
-    const { userData } = req.body
+export async function userLogin (req,res, next) {
+    const userData  = req.body
     try{
         if(!userData){
             return res.status(403).json({message:"MISSING OBJECT"})
@@ -28,13 +29,11 @@ export async function userLogin (req,res) {
         if(!userData.userName || !userData.userPassword){
             return res.status(403).json({message:"MISSING DATA"})
         }
-        const [result] = await db.query('SELECT * FROM users WHERE user_name = ?', [userData.userName])
-        if(result.length  == 0){
-            return res.status(404).json({message: "WRONG USER"})
+        const user = await getUserByName(req, res, next, userData.userName)
+        if(!user){
+            res.status(401).json({message: "USER NOT FOUND"})
         }
-        const user = result[0]
-        const savedPassword = user.user_password
-        const compare = await bcrypt.compare(userData.userPassword, savedPassword)
+        const compare = await bcrypt.compare(userData.userPassword, user.user_password)
         if(compare){
             const token = jwt.sign({user: user}, process.env.SECRET_KEY, {expiresIn: "1h"})
             return res.status(200).json({message: "SUCCESSFUL LOGIN", token: token, user: user})

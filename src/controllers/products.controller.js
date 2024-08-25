@@ -1,6 +1,5 @@
 import { getProductByName, getAllProducts, createProduct } from "../services/products.services.js";
-import { getComments } from "./coments.controller.js";
-
+import { getCommentsController } from "./coments.controller.js"; 
 export async function getAllProductsController(req, res){
     try{
         const products = await getAllProducts()
@@ -41,7 +40,7 @@ export async function getOneProductController(req, res) {
             return res.status(404).json({message: "PRODUCT NOT FOUND"})
         }
         product.product_photo = product.product_photo.toString('base64')
-        const [comments] = await getComments(productName)
+        const [comments] = await getCommentsController(productName)
         res.status(200).json({message: `SUCCESS BRINGING THE PRODUCT ${productName}`, product: product, comments: comments});
     } catch (err){
         res.status(500).json({message: "INTERNAL SERVER ERROR", error: err.message})

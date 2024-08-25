@@ -1,4 +1,4 @@
-PRIMERO CORRER EL COMANDO: node src/primerosProductos.js
+PRIMERO CORRER EL COMANDO: node src/utils/primerosProductos.js
 luego control + c para cancelar el servidor, y luego volver a ejecutar el server con: node --watch src/app.js
 
 

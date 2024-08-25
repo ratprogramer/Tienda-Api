@@ -1,7 +1,7 @@
 // SOLO EJECUTAR UNA VEZ
 
 import { fileURLToPath } from 'url';
-import {db} from '../app.js';
+import {db} from '../config/db.config.js';
 import { dirname, resolve } from 'path';
 import fs from 'fs';
 const __filename = fileURLToPath(import.meta.url);
@@ -12,16 +12,16 @@ function getBlobImage(filePath) {
 }
 
 const images = [
-    getBlobImage('assets/images/jacket.jpg'),
-    getBlobImage('assets/images/headphones.jpg'),
-    getBlobImage('assets/images/smartwatch.jpg'),
-    getBlobImage('assets/images/table.jpg'),
-    getBlobImage('assets/images/bike.jpg'),
-    getBlobImage('assets/images/keyboard.jpg'),
-    getBlobImage('assets/images/charger.jpg'),
-    getBlobImage('assets/images/watch.jpg'),
-    getBlobImage('assets/images/speaker.jpg'),
-    getBlobImage('assets/images/bulb.jpg')
+    getBlobImage('../assets/images/jacket.jpg'),
+    getBlobImage('../assets/images/headphones.jpg'),
+    getBlobImage('../assets/images/smartwatch.jpg'),
+    getBlobImage('../assets/images/table.jpg'),
+    getBlobImage('../assets/images/bike.jpg'),
+    getBlobImage('../assets/images/keyboard.jpg'),
+    getBlobImage('../assets/images/charger.jpg'),
+    getBlobImage('../assets/images/watch.jpg'),
+    getBlobImage('../assets/images/speaker.jpg'),
+    getBlobImage('../assets/images/bulb.jpg')
 ];
 
 const insertProducts = async () => {
