@@ -1,11 +1,11 @@
 import { db } from '../config/db.config.js';
 
 export async function getProductByName(productName) {
-    const [result] = await db.query('SELECT * FROM products WHERE product_name = ?', [productName]);
+    const [result] = await db.query('SELECT * FROM products WHERE product_name = ?', [productName])
     if (result.length === 0) {
-        return null;
+        return null
     }
-    return result[0];
+    return result[0]
 }
 
 export async function getAllProducts() {
