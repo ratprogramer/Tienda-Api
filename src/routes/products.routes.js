@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { getAllProductsController, createProductController, getOneProductController } from '../controllers/products.controller.js'
-import { createCommentController } from '../controllers/coments.controller.js'
+import { createCommentController } from '../controllers/comments.controller.js'
 
 const router = Router()
 

@@ -21,7 +21,7 @@ CREATE TABLE comments (
     comment_text VARCHAR(300),
     user_id INT,
     product_id INT,
-    type BOOLEAN,
+    comment_type BOOLEAN,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );

@@ -1,5 +1,5 @@
 import { getProductByName, getAllProducts, createProduct } from "../services/products.services.js";
-import { getCommentsController } from "./coments.controller.js"; 
+import { getCommentsController } from "./comments.controller.js"; 
 import { productSchema } from "../schemas/product.schema.js";
 
 export async function getAllProductsController(req, res){
