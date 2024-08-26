@@ -33,8 +33,5 @@ export async function createCommentController(req,res) {
 
 export async function getCommentsController(productName){
     const comments = await getCommets(productName)
-    if(!comments){
-        return res.status(404).json({message: "COMMENT NOT FOUND"})
-    }
     return comments
 }
