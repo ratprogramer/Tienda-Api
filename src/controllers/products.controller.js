@@ -57,9 +57,7 @@ export async function getOneProductController(req, res) {
     const comments = await getCommentsController(productName);
     res.status(200).json({message: `SUCCESS BRINGING THE PRODUCT ${productName}`,product: product,comments: comments,});
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "INTERNAL SERVER ERROR", error: err.message });
+    res.status(500).json({ message: "INTERNAL SERVER ERROR", error: err.message });
   }
 }
 
