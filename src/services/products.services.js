@@ -17,7 +17,7 @@ export async function getAllProducts() {
 }
 
 export async function createProduct(productData) {
-    const [rows] = await db.query('INSERT INTO products (product_name, product_description, product_price) VALUES (?,?,?)', [productData.productName, productData.productDescription, productData.productPrice])
+    const [rows] = await db.query('INSERT INTO products (product_name, product_description, product_photo, product_price) VALUES (?,?,?)', [productData.productName, productData.productDescription,productData.productPhoto, productData.productPrice])
     if(rows.affectedRows  == 0){
         return null
     }

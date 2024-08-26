@@ -1,5 +1,7 @@
 import { getProductByName, getAllProducts, createProduct } from "../services/products.services.js";
 import { getCommentsController } from "./coments.controller.js"; 
+import { productSchema } from "../schemas/product.schema.js";
+
 export async function getAllProductsController(req, res){
     try{
         const products = await getAllProducts()
@@ -15,16 +17,13 @@ export async function getAllProductsController(req, res){
     }
 }
 
-
 export async function createProductController(req, res) {
-    const productData = req.body
     try{
-        if(!productData.productName || !productData.productDescription || !productData.productPrice){
-            return res.status(403).json({message:"MISSING DATA"})
-        }
+        const productData = productSchema.parse(req.body)
+        
         const result = await createProduct(productData)
         if(!result){
-            return res.status(404).json({message: "PRODUCT NOT FOUND"})
+            return res.status(404).json({message: "PRODUCT NOT FOUND"}) 
         }
         res.status(201).json({message: "SUCCESSFULLY CREATED PRODUCT"})
     } catch (err){

@@ -1,14 +1,12 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs"
 import { createUser, getUserByName } from "../services/users.services.js";
-
+import { userSchema } from "../schemas/user.schema.js";
+import z from 'zod';
 
 export async function userRegister (req,res) {
-    const  userData  = req.body
     try{
-        if(!userData.userName || !userData.userPassword){
-            return res.status(403).json({message:"MISSING DATA"})
-        }
+        const userData = userSchema.parse(req.body)
         const hashPassword = await bcrypt.hash(userData.userPassword, 10)
         const message = await createUser(userData, hashPassword)
         if(!message){
@@ -16,20 +14,17 @@ export async function userRegister (req,res) {
         }
         res.status(201).json({message: "SUCCESSFULLY CREATED USER"})
     } catch (err){
+        if (err instanceof z.ZodError) {
+            return res.status(400).json({ message: "Validation error", errors: err.errors });
+        }
         res.status(500).json({message: "INTERNAL SERVER ERROR", error: err.message})
     }
 }
 
 export async function userLogin (req,res, next) {
-    const userData  = req.body
     try{
-        if(!userData){
-            return res.status(403).json({message:"MISSING OBJECT"})
-        }
-        if(!userData.userName || !userData.userPassword){
-            return res.status(403).json({message:"MISSING DATA"})
-        }
-        const user = await getUserByName(req, res, next, userData.userName)
+        const userData = userSchema.parse(req.body)
+        const user = await getUserByName(userData.userName)
         if(!user){
             res.status(401).json({message: "USER NOT FOUND"})
         }
@@ -40,6 +35,9 @@ export async function userLogin (req,res, next) {
         }
         res.status(200).json({message: "WRONG PASSWORD"})
     } catch (err){
+        if(err instanceof z.ZodError){
+            return res.status(400).json({ message: "Validation error", errors: err.errors });
+        }
         res.status(500).json({message: "INTERNAL SERVER ERROR", error: err.message})
     }
 }
