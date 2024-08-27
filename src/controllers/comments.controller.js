@@ -20,10 +20,9 @@ export async function createCommentController(req,res) {
         
         const result = await createComment(commentData)
         if(!result){
-            return res.status(500).json({message: `ERROR CREATING THE COMMENT IN ${productName}`});
+            return res.status(500).json({message: `ERROR CREATING THE COMMENT IN ${productName}`})
         }
-        console.log("hplas");
-        return res.status(200).json({message: `SUCCESS COMMENT IN THE PRODUCT ${productName}`});
+        return res.status(200).json({message: `SUCCESS COMMENT IN THE PRODUCT ${productName}`})
     } catch (err){
         if(err instanceof z.ZodError){
             return res.status(403).json({message: "Validation error", error: err.errors})
