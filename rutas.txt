@@ -19,3 +19,10 @@ Metodo: get = /tienda-angarita/home/:articulo  => devuelve el objeto del nombre 
     El nombre del articulo debe enviarse codificado, ejemplo /tienda-angarita/home/Vintage%20Leather%20Jacket
     los espacios se deben remplazar por %20, con espacios funciona pero es una muy mala practica, tambien si quiere
     lo podemos remplazar por id, para no enrredarnos
+
+Metodo: post = /tienda-angarita/home/:articulo => body { text, userID, productID }
+    Ruta para crear un comentario
+
+Metodo: get = /tienda-angarita/home/:articulo/suggestions => devuelve la recomendacion
+
+Metodo: get = /home/:articulo/suggestions => devuelve las suger

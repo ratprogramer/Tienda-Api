@@ -1,4 +1,4 @@
-import { db } from "../config/db.config.js";
+import { db } from "../models/db.js";
 
 export async function createComment(commentData) {
     const [rows] = await db.query('INSERT INTO comments (comment_text, user_id, product_id, comment_type) VALUES (?,?,?,?)', [commentData.text, commentData.userID, commentData.productID, commentData.type])

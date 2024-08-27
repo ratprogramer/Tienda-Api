@@ -1,11 +1,11 @@
-import { db } from "../config/db.config.js";
+import { db } from "../models/db.js";
 
 export async function createUser(userData, hashPassword){       
     const [rows] = await db.query('INSERT INTO users (user_name, user_password) VALUES (?,?)', [userData.userName, hashPassword])
     if(rows.affectedRows  == 0){
         return null
     }
-    return "USER CREATEDSUCCESSFULLY CREATED USER" 
+    return "USER CREATED SUCCESSFULLY CREATED USER" 
 }
 
 export async function getUserByName(userName) {

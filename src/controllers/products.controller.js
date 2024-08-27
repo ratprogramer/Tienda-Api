@@ -1,4 +1,4 @@
-import { getProductByName, getAllProducts, createProduct } from "../services/products.services.js";
+import { getProductByName, getAllProducts, createProduct } from "../repositories/products.repository.js";
 import { getCommentsController } from "./comments.controller.js";
 import { productSchema } from "../schemas/product.schema.js";
 import { assistant } from "../utils/assistant.js";
@@ -55,7 +55,7 @@ export async function getOneProductController(req, res) {
     }
     product.product_photo = product.product_photo.toString("base64");
     const comments = await getCommentsController(productName);
-    res.status(200).json({message: `SUCCESS BRINGING THE PRODUCT ${productName}`,product: product,comments: comments,});
+    res.status(200).json({message: `SUCCESS BRINGING THE PRODUCT ${productName}`,product: product, comments: comments,});
   } catch (err) {
     res.status(500).json({ message: "INTERNAL SERVER ERROR", error: err.message });
   }
@@ -72,9 +72,9 @@ export async function getSuggestionsController(req, res) {
     if (!comments) {
         return res.status(404).json({ message: "COMMENTS NOT FOUND" });
     }
-    const commentString = comments.map( comment => comment.comment_text).join(';')
+    const commentString = await comments.map( comment => comment.comment_text).join(';')
     const respuesta = await assistant(commentString, product)
-    res.send(respuesta)
+    res.status(200).json({respuesta})
     } catch (err) {
         res.status(500).json({ message: "INTERNAL SERVER ERROR" });
     }

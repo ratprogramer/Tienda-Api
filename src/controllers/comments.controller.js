@@ -1,14 +1,15 @@
-import { getProductByName } from "../services/products.services.js"
+import { getProductByName } from "../repositories/products.repository.js"
 import { classifier } from "../utils/classifier.js"
-import { createComment, getCommets } from "../services/comments.services.js"
+import { createComment, getCommets } from "../repositories/comments.repository.js"
 import { commentSchema } from "../schemas/comment.schema.js"
 import z from 'zod'
 
 export async function createCommentController(req,res) {
     try{
         const productName = decodeURIComponent(req.params.articulo)
-        const commentData = commentSchema.parse(req.body)
         const product = await getProductByName(productName)
+        req.body.productID = product.id
+        const commentData = commentSchema.parse(req.body)
         if(!product){
             return res.status(404).json({message: "PRODUCT NOT FOUND"})
         }

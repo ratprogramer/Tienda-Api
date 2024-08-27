@@ -1,4 +1,4 @@
-import { db } from '../config/db.config.js';
+import { db } from '../models/db.js';
 
 export async function getProductByName(productName) {
     const [result] = await db.query('SELECT * FROM products WHERE product_name = ?', [productName])

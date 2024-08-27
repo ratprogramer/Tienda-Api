@@ -27,5 +27,5 @@ CREATE TABLE comments (
 );
 
 
-select * from products
+select * from comments
 

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs"
-import { createUser, getUserByName } from "../services/users.services.js";
+import { createUser, getUserByName } from "../repositories/users.repository.js";
 import { userSchema } from "../schemas/user.schema.js";
 import z from 'zod';
 
