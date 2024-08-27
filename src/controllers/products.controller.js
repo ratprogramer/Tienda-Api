@@ -13,16 +13,9 @@ export async function getAllProductsController(req, res) {
     products.forEach((product) => {
       product.product_photo = product.product_photo.toString("base64");
     });
-    res
-      .status(200)
-      .json({
-        message: "SUCCESS BRINGING ALL THE PRODUCTS",
-        products: products,
-      });
-  } catch (err) {
-    res
-      .status(500)
-      .json({ message: "INTERNAL SERVER ERROR", error: err.message });
+    res.status(200).json({ message: "SUCCESS BRINGING ALL THE PRODUCTS", products: products });
+    } catch (err) {
+    res.status(500).json({ message: "INTERNAL SERVER ERROR", error: err.message });
   }
 }
 
@@ -36,13 +29,9 @@ export async function createProductController(req, res) {
     res.status(201).json({ message: "SUCCESSFULLY CREATED PRODUCT" });
   } catch (err) {
     if (err instanceof z.ZodError) {
-      return res
-        .status(403)
-        .json({ message: "Validation error", error: err.errors });
+      return res.status(403).json({ message: "Validation error", error: err.errors });
     }
-    res
-      .status(500)
-      .json({ message: "INTERNAL SERVER ERROR", error: err.message });
+    res.status(500).json({ message: "INTERNAL SERVER ERROR", error: err.message });
   }
 }
 
