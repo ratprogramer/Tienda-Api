@@ -1,7 +1,7 @@
 // SOLO EJECUTAR UNA VEZ
 
 import { fileURLToPath } from 'url';
-import {db} from '../config/db.config.js';
+import {db} from '../models/db.js';
 import { dirname, resolve } from 'path';
 import fs from 'fs';
 const __filename = fileURLToPath(import.meta.url);
@@ -37,7 +37,6 @@ const insertProducts = async () => {
         await db.query(query, ['Stainless Steel Watch', 'Classic stainless steel watch with a minimalist design.', 100, images[7]]);
         await db.query(query, ['Bluetooth Speaker', 'Compact Bluetooth speaker with powerful sound.', 50, images[8]]);
         await db.query(query, ['Smart LED Bulb', 'Energy-efficient smart LED bulb with adjustable brightness and color.', 20, images[9]]);
-
         console.log('Products inserted successfully');
     } catch (err) {
         console.error('Error inserting products', err.message);

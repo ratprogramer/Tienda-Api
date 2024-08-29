@@ -1,7 +1,7 @@
 import { db } from "../models/db.js";
 
 export async function createUser(userData, hashPassword){       
-    const [rows] = await db.query('INSERT INTO users (user_name, user_password) VALUES (?,?)', [userData.userName, hashPassword])
+    const [rows] = await db.query("INSERT INTO users (user_name, user_password, user_type) VALUES (?,?, IFNULL(?, 'User'))", [userData.userName, hashPassword, userData.userType])
     if(rows.affectedRows  == 0){
         return null
     }

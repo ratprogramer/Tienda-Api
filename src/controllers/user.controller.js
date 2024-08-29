@@ -28,13 +28,23 @@ export async function userLogin (req,res, next) {
         if(!user){
             res.status(401).json({message: "USER NOT FOUND"})
         }
-        const compare = await bcrypt.compare(userData.userPassword, user.user_password)
-        if(compare){
-            const token = jwt.sign({user: user}, process.env.SECRET_KEY, {expiresIn: "1h"})
-            return res.status(200).json({message: "SUCCESSFUL LOGIN", token: token, user: user})
+        if(user.user_type == 'User'){
+            if(compare){
+                const compare = await bcrypt.compare(userData.userPassword, user.user_password)
+                const token = jwt.sign({user: user}, process.env.SECRET_KEY, {expiresIn: "1h"})
+                return res.status(200).json({message: "SUCCESSFUL LOGIN", token: token, user: user})
+            }else{
+                res.status(403).json({message: "WRONG PASSWORD"})
+            }
+        }else if(user.user_type == 'Admin'){
+            if(userData.userPassword === user.user_password){
+                const token = jwt.sign({user: user}, process.env.SECRET_KEY, {expiresIn: "1h"})
+                return res.status(200).json({message: "SUCCESSFUL ADMIN LOGIN", token: token, user: user})
+            }else{
+                res.status(403).json({message: "WRONG PASSWORD"})
+            }
         }
-        res.status(200).json({message: "WRONG PASSWORD"})
-    } catch (err){
+    }catch (err){
         if(err instanceof z.ZodError){
             return res.status(400).json({ message: "Validation error", errors: err.errors });
         }
