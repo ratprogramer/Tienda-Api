@@ -34,20 +34,20 @@ export async function userLogin (req,res, next) {
                 const token = jwt.sign({user: user}, process.env.SECRET_KEY, {expiresIn: "1h"})
                 return res.status(200).json({message: "SUCCESSFUL LOGIN", token: token, user: user})
             }else{
-                res.status(403).json({message: "WRONG PASSWORD"})
+                return res.status(403).json({message: "WRONG PASSWORD"})
             }
         }else if(user.user_type == 'Admin'){
             if(userData.userPassword === user.user_password){
                 const token = jwt.sign({user: user}, process.env.SECRET_KEY, {expiresIn: "1h"})
                 return res.status(200).json({message: "SUCCESSFUL ADMIN LOGIN", token: token, user: user})
             }else{
-                res.status(403).json({message: "WRONG PASSWORD"})
+                return res.status(403).json({message: "WRONG PASSWORD"})
             }
         }
     }catch (err){
         if(err instanceof z.ZodError){
             return res.status(400).json({ message: "Validation error", errors: err.errors });
         }
-        res.status(500).json({message: "INTERNAL SERVER ERROR", error: err.message})
+        return res.status(500).json({message: "INTERNAL SERVER ERROR", error: err.message})
     }
 }
