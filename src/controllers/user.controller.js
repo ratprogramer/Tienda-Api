@@ -29,8 +29,8 @@ export async function userLogin (req,res, next) {
             res.status(401).json({message: "USER NOT FOUND"})
         }
         if(user.user_type == 'User'){
+            const compare = await bcrypt.compare(userData.userPassword, user.user_password)
             if(compare){
-                const compare = await bcrypt.compare(userData.userPassword, user.user_password)
                 const token = jwt.sign({user: user}, process.env.SECRET_KEY, {expiresIn: "1h"})
                 return res.status(200).json({message: "SUCCESSFUL LOGIN", token: token, user: user})
             }else{
