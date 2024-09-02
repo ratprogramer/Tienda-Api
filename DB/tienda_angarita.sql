@@ -16,9 +16,10 @@ CREATE TABLE products (
     product_name VARCHAR(30),
     product_description VARCHAR (300),
     product_price INT,
+    protuct_category ENUM('Electronics', 'Clothings', 'Home Appliances') NOT NULL,
     product_photo LONGBLOB
 );
-
+DROP TABLE products;
 CREATE TABLE comments (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     comment_text VARCHAR(300),

@@ -15,6 +15,7 @@ export async function getAllProductsController(req, res) {
       product_name: row.product_name,
       product_description: row.product_description,
       product_price: row.product_price,
+      product_category: row.product_category,
       product_photo: `data:image/jpeg;data64${row.product_photo.toString('base64')}`
     }))
     res.status(200).json({ message: "SUCCESS BRINGING ALL THE PRODUCTS", products: updatedProducts })
@@ -32,7 +33,7 @@ export async function createProductController(req, res) {
     const parsedData = productSchema.parse(productData)
     const result = await createProduct(parsedData)
     if (!result) {
-      return res.status(404).json({ message: "PRODUCT NOT FOUND" })
+      return res.status(404).json({ message: "ERROR CREATING THE PRODUCT" })
     }
     res.status(201).json({ message: "SUCCESSFULLY CREATED PRODUCT" })
   } catch (err) {

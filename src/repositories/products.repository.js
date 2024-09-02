@@ -18,8 +18,8 @@ export async function getAllProducts() {
 
 export async function createProduct(productData) {
     try{
-        const [rows] = await db.query('INSERT INTO products (product_name, product_description, product_photo, product_price) VALUES (?,?,?,?)', 
-            [productData.productName, productData.productDescription,productData.productPhoto, productData.productPrice])
+        const [rows] = await db.query('INSERT INTO products (product_name, product_description, product_photo, product_price, product_category) VALUES (?,?,?,?,?)', 
+            [productData.productName, productData.productDescription,productData.productPhoto, productData.productPrice, productData.productCategory])
             if(rows.affectedRows  == 0){
                 return null
             }
