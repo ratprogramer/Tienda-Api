@@ -16,7 +16,7 @@ export async function getAllProductsController(req, res) {
       product_description: row.product_description,
       product_price: row.product_price,
       product_category: row.product_category,
-      product_photo: `data:image/jpeg;data64${row.product_photo.toString('base64')}`
+      product_photo: `data:image/jpeg;data64,${row.product_photo.toString('base64')}`
     }))
     res.status(200).json({ message: "SUCCESS BRINGING ALL THE PRODUCTS", products: updatedProducts })
   }catch (err) {
